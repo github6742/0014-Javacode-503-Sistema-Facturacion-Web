@@ -15,9 +15,8 @@ public class clienteBean implements Serializable{
     private Cliente cliente;
     
     public clienteBean(){
-        
+        cliente = new Cliente();
     }
-
     
     public void setListaClientes(List<Cliente> listaClientes) {
         this.listaClientes = listaClientes;

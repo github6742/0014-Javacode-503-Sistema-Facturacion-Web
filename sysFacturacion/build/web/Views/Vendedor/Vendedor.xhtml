@@ -1,7 +1,10 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -9,6 +12,132 @@
 
             <ui:define name="content">
                 <h1>Vendedor</h1>
+                
+                
+
+                <h:form>
+                    <p:commandButton value="Nuevo Vendedor" actionListener="#{vendedorBean.prepararNuevoVendedor()}"
+                                     oncomplete="PF('dialogNuevoVendedor').show();"
+                                     update=":formNuevoVendedor"/>            
+                </h:form>
+
+                <h:form id="formMostrarVendedor">
+                    <p:dataTable id="tablaVendedores" paginator="true" paginatorPosition="top"
+                                 var="ven" value="#{vendedorBean.listaVendedores}" emptyMessage="No hay datos de clietnes">
+
+                        <p:column headerText="Codigo">
+                            <h:outputText value="#{ven.codVendedor}"/>                            
+                        </p:column>
+
+                        <p:column headerText="Nombre del Vendedor">
+                            <h:outputText value="#{ven.nombres} #{ven.apellidos} "/>                            
+                        </p:column>
+
+                        <p:column headerText="DUI">
+                            <h:outputText value="#{ven.dui}"/>                            
+                        </p:column>
+
+                        <p:column headerText="Celular">
+                            <h:outputText value="#{ven.celular}"/>                            
+                        </p:column>
+
+                        <p:column headerText="Direccion">
+                            <h:outputText value="#{ven.direccion}"/>                            
+                        </p:column>
+
+                        <p:column headerText="Modificar">
+                            <p:commandButton value="Modificar" oncomplete="PF('dialogModificarVendedor').show();"
+                                             update=":formModificarVendedor">
+                                <f:setPropertyActionListener target="#{vendedorBean.vendedor}" value="#{ven}"/>                
+                            </p:commandButton>                            
+                        </p:column>
+
+                        <p:column headerText="Eliminar">
+                            <p:commandButton value="Eliminar" oncomplete="PF('dialogEliminarVendedor').show();"
+                                             update=":formEliminarVendedor">
+                                <f:setPropertyActionListener target="#{vendedorBean.vendedor}" value="#{ven}"/>                
+                            </p:commandButton>                                           
+                        </p:column>
+
+                    </p:dataTable>
+
+                </h:form>
+
+
+                <h:form id="formNuevoVendedor">
+                    <p:dialog id="dlgNuevoVendedor" widgetVar="dialogNuevoVendedor" 
+                              resizable="false" showEffect="explode" hideEffect="explode" modal="true">
+                        <p:panelGrid columns="2" style="margin: 0 auto;">
+
+                            <p:outputLabel value="Nombres"/>
+                            <p:inputText value="#{vendedorBean.vendedor.nombres}"/>
+
+                            <p:outputLabel value="Apellidos"/>
+                            <p:inputText value="#{vendedorBean.vendedor.apellidos}"/>
+
+                            <p:outputLabel value="DUI"/>
+                            <p:inputText value="#{vendedorBean.vendedor.dui}"/>
+
+                            <p:outputLabel value="Celular"/>
+                            <p:inputText value="#{vendedorBean.vendedor.celular}"/>
+
+                            <p:outputLabel value="Direccion"/>
+                            <p:inputText value="#{vendedorBean.vendedor.direccion}"/>
+
+                            <p:commandButton value="Guardar" actionListener="#{vendedorBean.nuevoVendedor()}"
+                                             update=":formMostrarVendedor:tablaVendedores"
+                                             oncomplete="PF('dialogNuevoVendedor').hide();"/>
+
+                            <p:commandButton value="Cancelar" oncomplete="PF('dialogNuevoVendedor').hide();"/>
+
+                        </p:panelGrid>
+                    </p:dialog>
+                </h:form>
+
+                <h:form id="formModificarVendedor">
+                    <p:dialog id="dlgNuevoVendedor" widgetVar="dialogModificarVendedor" 
+                              resizable="false" showEffect="explode" hideEffect="explode" modal="true">
+                        <p:panelGrid columns="2" style="margin: 0 auto;">
+
+                            <p:outputLabel value="Nombres"/>
+                            <p:inputText value="#{vendedorBean.vendedor.nombres}"/>
+
+                            <p:outputLabel value="Apellidos"/>
+                            <p:inputText value="#{vendedorBean.vendedor.apellidos}"/>
+
+                            <p:outputLabel value="DUI"/>
+                            <p:inputText value="#{vendedorBean.vendedor.dui}"/>
+
+                            <p:outputLabel value="Celular"/>
+                            <p:inputText value="#{vendedorBean.vendedor.celular}"/>
+
+                            <p:outputLabel value="Direccion"/>
+                            <p:inputText value="#{vendedorBean.vendedor.direccion}"/>
+
+                            <p:commandButton value="Guardar" actionListener="#{vendedorBean.modificarVendedor()}"
+                                             update=":formMostrarVendedor:tablaVendedores"
+                                             oncomplete="PF('dialogModificarVendedor').hide();"/>
+
+                            <p:commandButton value="Cancelar" oncomplete="PF('dialogModificarVendedor').hide();"/>
+
+                        </p:panelGrid>
+                    </p:dialog>
+                </h:form>
+                
+                
+
+                <h:form id="formEliminarVendedor">
+                    <p:dialog id="dlgEliminarVendedor" widgetVar="dialogEliminarVendedor" 
+                              resizable="false" showEffect="explode" hideEffect="explode" modal="true">
+                            <h:outputText value="Desea eliminar el vendedor?"/>
+                            <p:commandButton value="Si" actionListener="#{vendedorBean.eliminarVendedor()}"
+                                             update=":formMostrarVendedor:tablaVendedores"
+                                             oncomplete="PF('dialogEliminarVendedor').hide();"/>
+
+                            <p:commandButton value="No" oncomplete="PF('dialogEliminarVendedor').hide();"/>
+                    </p:dialog>
+                </h:form>
+                
             </ui:define>
 
         </ui:composition>
