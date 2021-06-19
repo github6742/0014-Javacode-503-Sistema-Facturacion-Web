@@ -14,9 +14,11 @@
     </h:head>
 
     <h:body>
-
+        <div id="divGeneral">
         <div id="top">
-            <ui:insert name="top">Top</ui:insert>
+            <ui:insert name="top"></ui:insert>
+            <h1>SISTEMA DE FACTURACION</h1>
+            <div id="menuPrincipal">
             <h:form>
 
                 <p:menubar>
@@ -46,6 +48,7 @@
                 </p:menubar>
                 
             </h:form>
+                </div>
         </div>
 
         <div id="content" class="center_content">
@@ -55,7 +58,7 @@
         <div id="bottom">
             <ui:insert name="bottom">&copy; 2015 JavaCode503</ui:insert>
         </div>
-
+</div>
     </h:body>
 
 </html>
