@@ -8,6 +8,7 @@ package sys.imp;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import sys.dao.clienteDao;
 import sys.model.Cliente;
 import sys.util.HibernateUtil;
@@ -92,5 +93,20 @@ public class clienteDaoImp implements clienteDao {
                 session.close();
             }
         }
+    }
+
+    @Override
+    public Cliente obtenerClientePorCodigo(Session session, Integer codigo) throws Exception {
+        Cliente cliente=null;
+        System.out.println("obtenerClientePorCodigo--0010--codigo: "+codigo);
+        
+        String hql = "FROM Cliente WHERE codCliente=:codCliente";
+        System.out.println("obtenerClientePorCodigo--0020");
+        Query q = session.createQuery(hql);
+        System.out.println("obtenerClientePorCodigo--0030");
+        q.setParameter("codCliente",codigo);
+        System.out.println("obtenerClientePorCodigo--0040--");
+        
+        return (Cliente) q.uniqueResult();
     }
 }
