@@ -8,6 +8,7 @@ package sys.imp;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import sys.dao.productoDao;
 import sys.model.Producto;
 import sys.util.HibernateUtil;
@@ -91,6 +92,14 @@ public class productoDaoImp implements productoDao{
                 session.close();
             }
         }
+    }
+
+    @Override
+    public Producto obtenerProductoPorCodBarra(Session session, String codBarra) throws Exception {
+        String hql = "FROM Producto WHERE codBarra=:codBarra";
+        Query q = session.createQuery(hql);
+        q.setParameter("codBarra",codBarra);
+        return (Producto) q.uniqueResult();
     }
     
 }

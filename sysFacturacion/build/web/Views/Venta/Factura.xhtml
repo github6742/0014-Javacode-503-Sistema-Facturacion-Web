@@ -57,19 +57,21 @@
 
                         </p:layout>
                         <p:separator/>
-                        <p:panelGrid columns="3">
+                        <p:panelGrid id="gridBuscarProductos" columns="3">
                             <p:outputLabel value="Codigo Barra"/>
-                            <p:inputText value="pepe" size="12"/>
-                            <p:commandButton value="pepe"/>
+                            <p:inputText size="12"/>
+                            <p:commandButton value="Buscar"
+                                             oncomplete="PF('dialogProductos').show();"
+                                             update=":formFactura:dlgProductos"/>
                         </p:panelGrid>
                         <p:separator/>
-                        <p:dataTable id="idTablaProductosFactura">
+                        <p:dataTable id="tablaProductosFactura" var="item" value="#{facturaBean.listaDetalleFactura}">
                             <p:column headerText="Codigo Barra">
-
+                                <h:outputLabel value="#{item.codBarra}"/>
                             </p:column>
 
                             <p:column headerText="Producto">
-
+                                <h:outputLabel value="#{item.nombreProducto}"/>
                             </p:column>
 
                             <p:column headerText="Cantidad">
@@ -77,7 +79,7 @@
                             </p:column>
 
                             <p:column headerText="Precio Venta">
-
+                               $ <h:outputLabel value="#{item.precioVenta}"/>
                             </p:column>
 
                             <p:column headerText="Total">
@@ -89,17 +91,12 @@
                         <p:outputLabel value="TOTAL VENTA"/>
                         $ <p:outputLabel value="total a vender"/>
                         <p:separator/>
+                        
                         <p:commandButton value="Registrar" style="width: 150px; height: 60px;"/>
                         <p:commandButton value="Imprimir" style="width: 150px; height: 60px;"/>
                         <p:commandButton value="Cancelar" style="width: 150px; height: 60px;"/>
 
                     </p:panel>
-
-                    
-                    
-                    
-                    
-                    
                     
                     <!--Dialog para mostrar datos de los clientes del sistema -->
                     <p:dialog  id="dlgClientes" widgetVar="dialogClientes" modal="true" resizable="false"
@@ -125,10 +122,46 @@
                                                  oncomplete="PF('dialogClientes').hide();"
                                                  update=":formFactura:gridDatosCliente"/>
                             </p:column>
+                        </p:dataTable>
+                        <p:commandButton value="Cerrar" onclick="PF('dialogClientes').hide();"/>
+                    </p:dialog>
+                    
+                    <!--Dialog para mostrar datos de los productos del sistema -->
+                    <p:dialog  id="dlgProductos" widgetVar="dialogProductos" modal="true" resizable="false"
+                               showEffect="explode" hideEffect="explode">
+                        <p:dataTable id="tablaProductos" paginator="true" paginatorPosition="top" style="width: 700px;" 
+                                     var="pro" value="#{productoBean.listaProductos}" emptyMessage="No hay datos de productos">
+
+                            <p:column headerText="Codigo">
+                                <h:outputText value="#{pro.codProducto}"/>                            
+                            </p:column>
+
+                            <p:column headerText="Nombre del Producto">
+                                <h:outputText value="#{pro.nombreProducto} "/>                            
+                            </p:column>
+
+                            <p:column headerText="Precio Venta">
+                                <h:outputText value="#{pro.precioVenta}"/>                            
+                            </p:column>
+
+                            <p:column headerText="Stock Actual">
+                                <h:outputText value="#{pro.stockActual}"/>                            
+                            </p:column>
+
+                            <p:column headerText="Codigo Barra">
+                                <h:outputText value="#{pro.codBarra}"/>                            
+                            </p:column>
+
+                            <p:column headerText="">
+                                <p:commandButton value="Seleccionar" 
+                                                 actionListener="#{facturaBean.agregarDatosProducto(pro.codBarra)}"
+                                                 oncomplete="PF('dialogProductos').hide();"
+                                                 update=":formFactura:tablaProductosFactura"/>
+                            </p:column>
 
 
                         </p:dataTable>
-                        <p:commandButton value="Cerrar" onclick="PF('dialogClientes').hide();"/>
+                        <p:commandButton value="Cerrar" onclick="PF('dialogProductos').hide();"/>
                     </p:dialog>
 
                 </h:form>
