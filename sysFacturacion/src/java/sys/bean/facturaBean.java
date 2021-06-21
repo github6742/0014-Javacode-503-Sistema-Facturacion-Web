@@ -21,7 +21,7 @@ public class facturaBean implements Serializable{
     Transaction transaction=null;
     
     private Cliente cliente;
-    private String codigoCliente;
+    private Integer codigoCliente;
     
     public facturaBean(){
     }
@@ -34,11 +34,11 @@ public class facturaBean implements Serializable{
         this.cliente = cliente;
     }
 
-    public String getCodigoCliente() {
+    public Integer getCodigoCliente() {
         return codigoCliente;
     }
 
-    public void setCodigoCliente(String codigoCliente) {
+    public void setCodigoCliente(Integer codigoCliente) {
         this.codigoCliente = codigoCliente;
     }
     
@@ -46,43 +46,71 @@ public class facturaBean implements Serializable{
     public void agregarDatosCliente(Integer codCliente){
         this.transaction = null;
         this.session = null;
-        System.out.println("agregarDatosCliente--->codCliente: "+codCliente);
         try{
-            System.out.println("agregarDatosCliente--0010");
             this.session = HibernateUtil.getSessionFactory().openSession();
-            System.out.println("agregarDatosCliente--0020");
             clienteDao cDao = new clienteDaoImp();
-            System.out.println("agregarDatosCliente--0030");
             this.transaction = this.session.beginTransaction();
-            System.out.println("agregarDatosCliente--0040");
             
             //Obtener los datos del cliente en la variable objeto cliente, segun el codigo del cliente
             this.cliente = cDao.obtenerClientePorCodigo(this.session, codCliente);
-            System.out.println("agregarDatosCliente--0050");
             
             this.transaction.commit();
-            System.out.println("agregarDatosCliente--0060");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Correcto","Datos del cliente agregado"));
-            System.out.println("agregarDatosCliente--0070");
+            
             
         } catch (Exception e) {
-            System.out.println("agregarDatosCliente--0080");
             if(this.transaction!=null){
-                System.out.println("agregarDatosCliente--0090");
                 System.out.println(e.getMessage());
-                System.out.println("agregarDatosCliente--0100");
                 transaction.rollback();
-                System.out.println("agregarDatosCliente--0110");
             }
             
         } finally {
-            System.out.println("agregarDatosCliente--0120");
             if(this.session!=null){
-               System.out.println("agregarDatosCliente--0130");
                this.session.close();
             }
-        System.out.println("agregarDatosCliente--0140");
         }
-    System.out.println("agregarDatosCliente--0150");
+    }
+    
+    
+    
+    //Metodo para agregar los datos del cliente buscado por codCliente
+    public void agregarDatosCliente2(){
+        this.transaction = null;
+        this.session = null;
+        
+        try{
+            if (this.codigoCliente == null){
+                return;
+            }
+            
+            this.session = HibernateUtil.getSessionFactory().openSession();
+            clienteDao cDao = new clienteDaoImp();
+            this.transaction = this.session.beginTransaction();
+            
+            //Obtener los datos del cliente en la variable objeto cliente, segun el codigo del cliente
+            this.cliente = cDao.obtenerClientePorCodigo(this.session, this.codigoCliente);
+            
+            if (this.cliente != null) {
+                this.codigoCliente=null;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Correcto","Datos del cliente agregado"));
+            } else {
+                this.codigoCliente=null;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Incorrecto","Cliente no encontrado"));
+            }
+            
+            this.transaction.commit();
+            
+            
+        } catch (Exception e) {
+            if(this.transaction!=null){
+                System.out.println(e.getMessage());
+                transaction.rollback();
+            }
+            
+        } finally {
+            if(this.session!=null){
+               this.session.close();
+            }
+        }
     }
 }
