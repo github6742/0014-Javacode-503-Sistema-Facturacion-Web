@@ -197,4 +197,59 @@ public class facturaBean implements Serializable{
         }
             System.out.println("agregarDatosProducto-0060");
     }
+    
+    
+    
+    //Metodo para agregar los datos del producto buscado por codBarra
+    public void agregarDatosProducto2(){
+        this.transaction = null;
+        this.session = null;
+        
+        try{
+            if (this.codigoBarra.equals("")){
+                return;
+            }
+            
+            this.session = HibernateUtil.getSessionFactory().openSession();
+            productoDao pDao = new productoDaoImp();
+            this.transaction = this.session.beginTransaction();
+            
+            //Obtener los datos del producto en la variable objeto producto, segun el codigo de barra
+            this.producto = pDao.obtenerProductoPorCodBarra(this.session, codigoBarra);
+            
+            if (this.producto != null) {
+                   
+            
+            this.listaDetalleFactura.add(new Detallefactura(null, 
+                                                            null, 
+                                                            this.producto.getCodBarra(), 
+                                                            this.producto.getNombreProducto(), 
+                                                            0,
+                                                            this.producto.getPrecioVenta(), 
+                                                            new BigDecimal(0)));
+                
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Correcto","Datos del producto agregado al detalle"));
+                this.codigoBarra=null;
+            } else {
+                this.codigoBarra=null;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Incorrecto","Producto no encontrado"));
+            }
+            
+            this.transaction.commit();
+            
+            
+        } catch (Exception e) {
+            if(this.transaction!=null){
+                System.out.println(e.getMessage());
+                transaction.rollback();
+            }
+            
+        } finally {
+            if(this.session!=null){
+               this.session.close();
+            }
+        }
+    }
+    
+    
 }

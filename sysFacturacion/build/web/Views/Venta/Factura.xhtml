@@ -59,7 +59,12 @@
                         <p:separator/>
                         <p:panelGrid id="gridBuscarProductos" columns="3">
                             <p:outputLabel value="Codigo Barra"/>
-                            <p:inputText size="12"/>
+                            <p:inputText id="txtBuscarProductoCodigoBarra" value="#{facturaBean.codigoBarra}" 
+                                         size="12">
+                                <p:ajax event="keyup" listener="#{facturaBean.agregarDatosProducto2()}"
+                                        update=":formFactura:tablaProductosFactura :formFactura:txtBuscarProductoCodigoBarra"
+                                    />
+                            </p:inputText>
                             <p:commandButton value="Buscar"
                                              oncomplete="PF('dialogProductos').show();"
                                              update=":formFactura:dlgProductos"/>
@@ -158,12 +163,15 @@
                                                  oncomplete="PF('dialogProductos').hide();"
                                                  update=":formFactura:tablaProductosFactura"/>
                             </p:column>
-
-
+                            
                         </p:dataTable>
                         <p:commandButton value="Cerrar" onclick="PF('dialogProductos').hide();"/>
                     </p:dialog>
 
+                    
+                    
+                    
+                    
                 </h:form>
             </ui:define>
 
