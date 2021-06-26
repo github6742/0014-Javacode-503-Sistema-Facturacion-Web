@@ -21,12 +21,12 @@
 
                                 <h:panelGrid id="gridBuscarDatosCliente" columns="5">
                                     <p:outputLabel value="Codigo Cliente" style="font-weight: bold;"/>
-                                    
+
                                     <p:inputText id="txtBuscarCliente" value="#{facturaBean.codigoCliente}" size="12">
                                         <p:ajax event="keyup" listener="#{facturaBean.agregarDatosCliente2()}"
                                                 update=":formFactura:gridDatosCliente :formFactura:txtBuscarCliente"/>
                                     </p:inputText>
-                                    
+
                                     <p:commandButton value="Buscar" oncomplete="PF('dialogClientes').show();"
                                                      update=":formFactura:dlgClientes" />
 
@@ -63,7 +63,7 @@
                                          size="12">
                                 <p:ajax event="keyup" listener="#{facturaBean.agregarDatosProducto2()}"
                                         update=":formFactura:tablaProductosFactura :formFactura:txtBuscarProductoCodigoBarra"
-                                    />
+                                        />
                             </p:inputText>
                             <p:commandButton value="Buscar"
                                              oncomplete="PF('dialogProductos').show();"
@@ -80,29 +80,43 @@
                             </p:column>
 
                             <p:column headerText="Cantidad">
-
+                                <h:outputLabel value="#{item.cantidad}"/>
                             </p:column>
 
                             <p:column headerText="Precio Venta">
-                               $ <h:outputLabel value="#{item.precioVenta}"/>
+                                $ <h:outputLabel value="#{item.precioVenta}"/>
                             </p:column>
 
                             <p:column headerText="Total">
+                                <!--$ <h:outputLabel value="{item.total}"/>-->
 
+                                <h:outputText value="#{item.total}">
+                                    <f:convertNumber pattern="#0.00"/>
+                                </h:outputText>
                             </p:column>
 
                         </p:dataTable>
 
-                        <p:outputLabel value="TOTAL VENTA"/>
-                        $ <p:outputLabel value="total a vender"/>
                         <p:separator/>
-                        
+
+                        <h:panelGrid id="gridTotalFactura" columns="2" style="font-size: 24px; margin: 0 auto;">
+                            TOTAL VENTA $ 
+                            <!--<p:outputLabel value="{facturaBean.factura.totalVenta}" />-->
+
+                            <h:outputText value="#{facturaBean.factura.totalVenta}">
+                                <f:convertNumber pattern="#0.00"/>
+                            </h:outputText>
+
+                        </h:panelGrid>
+
+                        <p:separator/>
+
                         <p:commandButton value="Registrar" style="width: 150px; height: 60px;"/>
                         <p:commandButton value="Imprimir" style="width: 150px; height: 60px;"/>
                         <p:commandButton value="Cancelar" style="width: 150px; height: 60px;"/>
 
                     </p:panel>
-                    
+
                     <!--Dialog para mostrar datos de los clientes del sistema -->
                     <p:dialog  id="dlgClientes" widgetVar="dialogClientes" modal="true" resizable="false"
                                showEffect="explode" hideEffect="explode">
@@ -130,7 +144,7 @@
                         </p:dataTable>
                         <p:commandButton value="Cerrar" onclick="PF('dialogClientes').hide();"/>
                     </p:dialog>
-                    
+
                     <!--Dialog para mostrar datos de los productos del sistema -->
                     <p:dialog  id="dlgProductos" widgetVar="dialogProductos" modal="true" resizable="false"
                                showEffect="explode" hideEffect="explode">
@@ -158,20 +172,27 @@
                             </p:column>
 
                             <p:column headerText="">
-                                <p:commandButton value="Seleccionar" 
-                                                 actionListener="#{facturaBean.agregarDatosProducto(pro.codBarra)}"
-                                                 oncomplete="PF('dialogProductos').hide();"
-                                                 update=":formFactura:tablaProductosFactura"/>
+                                <p:commandButton value="Seleccionar" actionListener="#{facturaBean.pedirCantidadProducto(pro.codBarra)}"
+                                                 oncomplete="PF('dialogCantidadProducto').show();"
+                                                 update=":formFactura:dlgCantidadProducto"/>
                             </p:column>
-                            
+
                         </p:dataTable>
                         <p:commandButton value="Cerrar" onclick="PF('dialogProductos').hide();"/>
                     </p:dialog>
 
-                    
-                    
-                    
-                    
+                    <!--Dialog para pedir la cantidad de producto a vender -->
+                    <p:dialog id="dlgCantidadProducto" widgetVar="dialogCantidadProducto" header="cantidad"
+                              modal="true">
+                        Cantidad de producto a vender:
+                        <p:inputText id="txtCantidadProducto" value="#{facturaBean.cantidadProducto}"/>
+                        <p:commandButton value="Aceptar" actionListener="#{facturaBean.agregarDatosProducto()}"
+                                         update=":formFactura:tablaProductosFactura :formFactura:dlgCantidadProducto :formFactura:gridTotalFactura"
+                                         oncomplete="PF('dialogCantidadProducto').hide(); PF('dialogProductos').hide(); "/>                        
+                    </p:dialog>
+
+
+
                 </h:form>
             </ui:define>
 
