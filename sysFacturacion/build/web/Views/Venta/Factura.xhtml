@@ -22,7 +22,8 @@
                                 <h:panelGrid id="gridBuscarDatosCliente" columns="5">
                                     <p:outputLabel value="Codigo Cliente" style="font-weight: bold;"/>
 
-                                    <p:inputText id="txtBuscarCliente" value="#{facturaBean.codigoCliente}" size="12">
+                                    <p:inputText id="txtBuscarCliente" value="#{facturaBean.codigoCliente}" size="12"
+                                                 converter="#{integer}" converterMessage="El codigo debe ser numerico">
                                         <p:ajax event="keyup" listener="#{facturaBean.agregarDatosCliente2()}"
                                                 update=":formFactura:gridDatosCliente :formFactura:txtBuscarCliente"/>
                                     </p:inputText>
