@@ -334,4 +334,23 @@ public class facturaBean implements Serializable {
             System.out.println(e.getMessage());
         }
     }
+    
+    //Metodo para quitar un producto de la factura
+    public void quitarProductoDetalleFactura(String codBarra, Integer filaSeleccionada){
+        try{
+            int i=0;
+            for(Detallefactura item: this.listaDetalleFactura){
+                if(item.getCodBarra().equals(codBarra) && filaSeleccionada.equals(i)){
+                    this.listaDetalleFactura.remove(i);
+                    break;
+                }
+                i++;
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Informacion", "Se ha retirado el producto de la factura"));
+            //invocamos al metod calcularFactura, para actualizar el total a vender
+            this.totalFacturaVenta();
+        } catch (Exception e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", e.getMessage()));
+        }
+    }
 }

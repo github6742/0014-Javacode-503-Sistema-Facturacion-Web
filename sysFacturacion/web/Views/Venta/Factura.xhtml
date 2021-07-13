@@ -71,7 +71,7 @@
                                              update=":formFactura:dlgProductos"/>
                         </p:panelGrid>
                         <p:separator/>
-                        <p:dataTable id="tablaProductosFactura" var="item" value="#{facturaBean.listaDetalleFactura}">
+                        <p:dataTable id="tablaProductosFactura" var="item" value="#{facturaBean.listaDetalleFactura}" rowIndexVar="rowindex">
                             <p:column headerText="Codigo Barra">
                                 <h:outputLabel value="#{item.codBarra}"/>
                             </p:column>
@@ -90,10 +90,23 @@
 
                             <p:column headerText="Total">
                                 <!--$ <h:outputLabel value="{item.total}"/>-->
-
                                 <h:outputText value="#{item.total}">
                                     <f:convertNumber pattern="#0.00"/>
                                 </h:outputText>
+                            </p:column>
+                            
+                            <p:column headerText="Editar Cantidad">
+                                <p:commandLink value="$" 
+                                               title="Editar Cantidad" 
+                                               style="text-decoration: none; color: greenyellow;"/>
+                            </p:column>
+                            
+                            <p:column headerText="Quitar Producto">
+                                <p:commandLink value="X" 
+                                               actionListener="#{facturaBean.quitarProductoDetalleFactura(item.codBarra,rowindex)}"
+                                               update=":formFactura:tablaProductosFactura :formFactura:gridTotalFactura"
+                                               title="Quitar Producto" 
+                                               style="text-decoration: none; color: greenyellow;"/>
                             </p:column>
 
                         </p:dataTable>
@@ -192,7 +205,7 @@
                                          oncomplete="PF('dialogCantidadProducto').hide(); PF('dialogProductos').hide(); "/>                        
                     </p:dialog>
 
-                     <!--Dialog para pedir la cantidad de producto a vender -->
+                    <!--Dialog para pedir la cantidad de producto a vender -->
                     <p:dialog id="dlgCantidadProducto2" widgetVar="dialogCantidadProducto2" header="Cantidad"
                               modal="true">
                         Cantidad de producto a vender:
