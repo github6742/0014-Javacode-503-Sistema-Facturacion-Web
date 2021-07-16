@@ -71,7 +71,12 @@
                                              update=":formFactura:dlgProductos"/>
                         </p:panelGrid>
                         <p:separator/>
-                        <p:dataTable id="tablaProductosFactura" var="item" value="#{facturaBean.listaDetalleFactura}" rowIndexVar="rowindex">
+                        <p:dataTable id="tablaProductosFactura" var="item" editable="true"
+                                     value="#{facturaBean.listaDetalleFactura}" rowIndexVar="rowindex">
+
+                            <p:ajax event="rowEdit" listener="#{facturaBean.onRowEdit}" update=":formFactura:tablaProductosFactura :formFactura:gridTotalFactura"/>
+                            <p:ajax event="rowEditCancel" listener="#{facturaBean.onRowCancel}" update=":formFactura:tablaProductosFactura :formFactura:gridTotalFactura"/>
+
                             <p:column headerText="Codigo Barra">
                                 <h:outputLabel value="#{item.codBarra}"/>
                             </p:column>
@@ -81,7 +86,26 @@
                             </p:column>
 
                             <p:column headerText="Cantidad">
-                                <h:outputLabel value="#{item.cantidad}"/>
+
+                                <p:cellEditor>
+                                    
+                                    <f:facet name="output">
+                                        <h:outputText value="#{item.cantidad}"/>
+                                    </f:facet>
+                                    
+                                    <f:facet name="input">
+                                        <p:inputText value="#{item.cantidad}" label="Cantidad Producto"
+                                                     required="true" requiredMessage="Es necesaria una cantidad"
+                                                     converter="#{Integer}" converterMessage="Esta no es una cantidad correcta"
+                                                     validatorMessage="La cantidad debe ser mayor o igual a 1">
+                                        <f:validateLongRange minimum="1"/>
+                                        </p:inputText>
+                                    </f:facet>
+                                    
+                                </p:cellEditor>
+
+                                <!--<h:outputLabel value="{item.cantidad}"/>-->
+
                             </p:column>
 
                             <p:column headerText="Precio Venta">
@@ -94,13 +118,14 @@
                                     <f:convertNumber pattern="#0.00"/>
                                 </h:outputText>
                             </p:column>
-                            
+
                             <p:column headerText="Editar Cantidad">
-                                <p:commandLink value="$" 
+                                <p:rowEditor />
+                                <!--<p:commandLink value="$" 
                                                title="Editar Cantidad" 
-                                               style="text-decoration: none; color: greenyellow;"/>
+                                               style="text-decoration: none; color: greenyellow;"/>-->
                             </p:column>
-                            
+
                             <p:column headerText="Quitar Producto">
                                 <p:commandLink value="X" 
                                                actionListener="#{facturaBean.quitarProductoDetalleFactura(item.codBarra,rowindex)}"

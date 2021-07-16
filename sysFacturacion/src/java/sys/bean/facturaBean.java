@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 import sys.dao.clienteDao;
 import sys.dao.productoDao;
 import sys.imp.clienteDaoImp;
@@ -353,4 +354,17 @@ public class facturaBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", e.getMessage()));
         }
     }
+    
+    // Metodos para editar la cantidad del producto en la tabla productosFactura
+    public void onRowEdit(RowEditEvent event) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Informacion", "Se modifico la cantidad"));
+        // Invocar al metodo calcularTotalFactura para actualizar el total a vender
+        this.totalFacturaVenta();
+        
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Informacion", "No se realizo ningun cambio"));
+    }
+    
 }
