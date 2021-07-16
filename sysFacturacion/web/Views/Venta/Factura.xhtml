@@ -12,6 +12,17 @@
 
             <ui:define name="content">
                 <h2>REALIZAR VENTA</h2>
+                
+                <h:form>
+                    <h:panelGrid width="900px" style="margin: 0 auto; background-color: lightgray;">
+                        <p:commandButton value="Nueva Venta" 
+                                         actionListener="#{facturaBean.numeracionFactura()}"
+                                         update=":formFactura"
+                                         style="width: 150px; height: 60px;"/>
+                    </h:panelGrid>
+                </h:form>
+                
+                
                 <h:form id="formFactura">
                     <p:growl id="mensajeGeneral" showDetail="true" autoUpdate="true" life="3000"/>
                     <p:panel header="-*-" style="width: 900px; margin: 0 auto; text-align: center;">
@@ -52,7 +63,7 @@
                                           font-size: 14px;" size="200">
                                 <h:panelGrid columns="1" style="font-size: 24px; font-weight: bold; margin-top: 30px; margin: 0 auto;">
                                     FACTURA
-                                    <p:outputLabel value="00000001"/>
+                                    <p:outputLabel value="#{facturaBean.numeroFactura}"/>
                                 </h:panelGrid>
                             </p:layoutUnit>
 
@@ -142,9 +153,13 @@
                             TOTAL VENTA $ 
                             <!--<p:outputLabel value="{facturaBean.factura.totalVenta}" />-->
 
-                            <h:outputText value="#{facturaBean.factura.totalVenta}">
+                            <!--<h:outputText value="#{facturaBean.factura.totalVenta}">
                                 <f:convertNumber pattern="#0.00"/>
-                            </h:outputText>
+                            </h:outputText>-->
+                            
+                            <p:outputLabel id="lblTotalFactura" value="#{facturaBean.totalVentaFactura}" >
+                                <f:convertNumber pattern="#0.00"/>
+                            </p:outputLabel>
 
                         </h:panelGrid>
 

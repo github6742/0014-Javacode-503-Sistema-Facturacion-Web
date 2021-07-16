@@ -13,8 +13,10 @@ import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import sys.dao.clienteDao;
+import sys.dao.facturaDao;
 import sys.dao.productoDao;
 import sys.imp.clienteDaoImp;
+import sys.imp.facturaDaoImp;
 import sys.imp.productoDaoImp;
 import sys.model.Cliente;
 import sys.model.Detallefactura;
@@ -41,6 +43,10 @@ public class facturaBean implements Serializable {
     private String cantidadProducto2;
     private String productoSeleccionado;
     private Factura factura;
+    
+    private Long numeroFactura;
+    
+    private BigDecimal totalVentaFactura;
 
     public facturaBean() {
         this.factura = new Factura();
@@ -119,6 +125,25 @@ public class facturaBean implements Serializable {
         this.factura = factura;
     }
 
+    public Long getNumeroFactura() {
+        return numeroFactura;
+    }
+
+    public void setNumeroFactura(Long numeroFactura) {
+        this.numeroFactura = numeroFactura;
+    }
+
+    public BigDecimal getTotalVentaFactura() {
+        return totalVentaFactura;
+    }
+
+    public void setTotalVentaFactura(BigDecimal totalVentaFactura) {
+        this.totalVentaFactura = totalVentaFactura;
+    }
+
+    
+    
+    
     //Metodo para agregar los datos de los clientes, por medio del dialogClientes
     public void agregarDatosCliente(Integer codCliente) {
         this.transaction = null;
@@ -320,17 +345,18 @@ public class facturaBean implements Serializable {
 
     //metodo para calcular el total a vender en la factura
     public void totalFacturaVenta() {
-        BigDecimal totalFacturaVenta = new BigDecimal("0");
+        this.totalVentaFactura = new BigDecimal("0");
+        //BigDecimal totalFacturaVenta = new BigDecimal("0");
         //float totalFacturaVenta;
 
         try {
             for (Detallefactura item : listaDetalleFactura) {
                 BigDecimal totalVentaPorProducto = BigDecimal.valueOf(item.getPrecioVenta()).multiply(new BigDecimal(item.getCantidad()));
                 item.setTotal(totalVentaPorProducto);
-                totalFacturaVenta = totalFacturaVenta.add(totalVentaPorProducto);
+                totalVentaFactura = totalVentaFactura.add(totalVentaPorProducto);
                 //totalFacturaVenta.setScale(2, BigDecimal.ROUND_UP);
             }
-            this.factura.setTotalVenta(totalFacturaVenta);
+            this.factura.setTotalVenta(totalVentaFactura);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -367,4 +393,40 @@ public class facturaBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Informacion", "No se realizo ningun cambio"));
     }
     
+    
+    //Metodo para generar el numero de factura
+    public void numeracionFactura(){
+        this.session = null;
+        this.transaction = null;
+                
+        try {
+            this.session = HibernateUtil.getSessionFactory().openSession();
+            this.transaction = this.session.beginTransaction();
+            
+            facturaDao fDao = new facturaDaoImp();
+            // verificar si hay registros en la tabla de la BD
+            this.numeroFactura = fDao.obtenerTotalRegistrosEnFactura(this.session);
+            
+            if (this.numeroFactura <= 0 || this.numeroFactura == null){
+                this.numeroFactura = Long.valueOf("1");
+            } else {
+                // recuperamos el utlimo registro que exista en la BD
+                this.factura = fDao.obtenerUltimoRegistro(this.session);
+                this.numeroFactura = Long.valueOf(this.factura.getNumeroFactura()+1);
+                // limpiar la variable totalVentaFactura
+                this.totalVentaFactura = new BigDecimal("0");
+            }
+            
+            this.transaction.commit();
+        } catch (Exception e) {
+            if(this.transaction!=null){
+                this.transaction.rollback();
+            }
+        } finally{
+            if(this.session!=null){
+                this.session.close();
+            }
+        }
+        
+    }
 }
