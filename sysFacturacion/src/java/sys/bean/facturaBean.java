@@ -452,6 +452,8 @@ public class facturaBean implements Serializable {
         this.numeroFactura = null;
         this.totalVentaFactura = null;
         
+        // invoca el metodo para desactivar controles en la factura
+        this.disableButton();
     }
     
     // Metodo para guardar venta
@@ -519,5 +521,20 @@ public class facturaBean implements Serializable {
             }
         }
             System.out.println("<<<guardarVenta>>>--0130--");
+    }
+    
+    // Metodos para activar o desactiva los controles en la factura
+    private boolean enabled;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+    
+    public void enableButton(){
+        enabled = true;
+    }
+    
+    public void disableButton(){
+        enabled = false;
     }
 }

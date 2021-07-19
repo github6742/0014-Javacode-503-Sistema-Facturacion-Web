@@ -18,7 +18,8 @@
                         <p:commandButton value="Nueva Venta" 
                                          actionListener="#{facturaBean.numeracionFactura()}"
                                          update=":formFactura"
-                                         style="width: 150px; height: 60px;"/>
+                                         style="width: 150px; height: 60px;"
+                                         action="#{facturaBean.enableButton()}"/>
                     </h:panelGrid>
                 </h:form>
                 
@@ -34,13 +35,15 @@
                                     <p:outputLabel value="Codigo Cliente" style="font-weight: bold;"/>
 
                                     <p:inputText id="txtBuscarCliente" value="#{facturaBean.codigoCliente}" size="12"
-                                                 converter="#{integer}" converterMessage="El codigo debe ser numerico">
+                                                 converter="#{Integer}" converterMessage="El codigo debe ser numerico"
+                                                 disabled="#{!facturaBean.enabled}">
                                         <p:ajax event="keyup" listener="#{facturaBean.agregarDatosCliente2()}"
                                                 update=":formFactura:gridDatosCliente :formFactura:txtBuscarCliente"/>
                                     </p:inputText>
 
                                     <p:commandButton value="Buscar" oncomplete="PF('dialogClientes').show();"
-                                                     update=":formFactura:dlgClientes" />
+                                                     update=":formFactura:dlgClientes" 
+                                                     disabled="#{!facturaBean.enabled}"/>
 
                                     <p:outputLabel value="Fecha: "  style="font-weight: bold;"/>
                                     <p:outputLabel value="Fecha del Sistema " style="font-weight: bold;"/>
@@ -72,14 +75,16 @@
                         <p:panelGrid id="gridBuscarProductos" columns="3">
                             <p:outputLabel value="Codigo Barra"/>
                             <p:inputText id="txtBuscarProductoCodigoBarra" value="#{facturaBean.codigoBarra}" 
-                                         size="12">
+                                         size="12"
+                                         disabled="#{!facturaBean.enabled}">
                                 <p:ajax event="keyup" listener="#{facturaBean.mostrarCantidadProducto2()}"
                                         update=":formFactura:gridBuscarProductos"
                                         />
                             </p:inputText> 
                             <p:commandButton value="Buscar"
                                              oncomplete="PF('dialogProductos').show();"
-                                             update=":formFactura:dlgProductos"/>
+                                             update=":formFactura:dlgProductos"
+                                             disabled="#{!facturaBean.enabled}"/>
                         </p:panelGrid>
                         <p:separator/>
                         <p:dataTable id="tablaProductosFactura" var="item" editable="true"
@@ -168,13 +173,17 @@
                         <p:commandButton value="Registrar" 
                                          actionListener="#{facturaBean.guardarVenta()}"
                                          style="width: 150px; height: 60px;"
-                                         update=":formFactura"/>
+                                         update=":formFactura"
+                                         disabled="#{!facturaBean.enabled}"
+                                         action="#{facturaBean.disableButton()}"/>
                         <p:commandButton value="Imprimir" 
-                                         style="width: 150px; height: 60px;"/>
+                                         style="width: 150px; height: 60px;"
+                                         disabled="#{!facturaBean.enabled}"/>
                         <p:commandButton value="Cancelar" 
                                          action="#{facturaBean.limpiarFactura()}"
                                          style="width: 150px; height: 60px;"
-                                         update=":formFactura"/>
+                                         update=":formFactura"
+                                         disabled="#{!facturaBean.enabled}"/>
 
                     </p:panel>
 
