@@ -3,6 +3,8 @@ package sys.bean;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -537,4 +539,22 @@ public class facturaBean implements Serializable {
     public void disableButton(){
         enabled = false;
     }
+    
+    //Recuperar fecha del sistema
+    private String fechaSistema;
+
+    public String getFechaSistema() {
+        Calendar fecha = new GregorianCalendar();
+        
+        int anio = fecha.get(Calendar.YEAR);
+        int mes = fecha.get(Calendar.MONTH);
+        int dia = fecha.get(Calendar.DAY_OF_MONTH);
+        
+        this.fechaSistema = (dia + "/" + mes + "/" + anio);
+        
+        return fechaSistema;
+    }
+    
+    
+    
 }

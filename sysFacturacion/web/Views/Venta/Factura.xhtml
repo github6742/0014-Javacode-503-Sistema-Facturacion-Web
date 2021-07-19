@@ -46,7 +46,7 @@
                                                      disabled="#{!facturaBean.enabled}"/>
 
                                     <p:outputLabel value="Fecha: "  style="font-weight: bold;"/>
-                                    <p:outputLabel value="Fecha del Sistema " style="font-weight: bold;"/>
+                                    <p:outputLabel value="#{facturaBean.fechaSistema}" style="font-weight: bold;"/>
                                 </h:panelGrid>
                                 <p:separator/>
                                 <h:panelGrid id="gridDatosCliente" columns="2">
