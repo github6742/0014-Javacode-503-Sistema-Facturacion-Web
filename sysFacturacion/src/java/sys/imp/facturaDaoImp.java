@@ -32,5 +32,13 @@ public class facturaDaoImp implements facturaDao{
         System.out.println("--obtenerTotalRegistrosEnFactura--0030--(Long) q.uniqueResult(): "+(Long) q.uniqueResult());
         return (Long) q.uniqueResult();
     }
+
+    @Override
+    public boolean guardarVentaFactura(Session session, Factura factura) throws Exception {
+        session.save(factura);
+        return true;
+    }
+
+    
     
 }

@@ -10,4 +10,6 @@ public interface facturaDao {
     // Averigurar si la tabla posee registros
     public Long obtenerTotalRegistrosEnFactura(Session session);
     
+    //
+    public boolean guardarVentaFactura(Session session, Factura factura) throws Exception;
 }
