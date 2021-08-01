@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8" collation="utf8_spanish_ci">facturacion</database>
+</source>
+<canvas zoom="150">
+<tables>
+<table name="cliente" view="colnames">
+<left>299</left>
+<top>385</top>
+<width>202</width>
+<height>219</height>
+<sql_create_table>CREATE TABLE `cliente` (
+  `codCliente` int(11) NOT NULL AUTO_INCREMENT,
+  `nombres` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
+  `apellidos` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
+  `direccion` varchar(150) COLLATE utf8_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`codCliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="detallefactura" view="colnames">
+<left>975</left>
+<top>211</top>
+<width>219</width>
+<height>268</height>
+<sql_create_table>CREATE TABLE `detallefactura` (
+  `codDetalle` int(11) NOT NULL AUTO_INCREMENT,
+  `codFactura` int(11) NOT NULL,
+  `codProducto` int(11) NOT NULL,
+  `codBarra` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `nombreProducto` varchar(75) COLLATE utf8_spanish_ci NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precioVenta` decimal(10,2) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`codDetalle`),
+  KEY `FK_detallefactura_factura` (`codFactura`),
+  KEY `FK_detallefactura_producto` (`codBarra`),
+  KEY `FK_detallefactura_prodcto` (`codProducto`),
+  CONSTRAINT `FK_detallefactura_factura` FOREIGN KEY (`codFactura`) REFERENCES `factura` (`codFactura`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_detallefactura_prodcto` FOREIGN KEY (`codProducto`) REFERENCES `producto` (`codProducto`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="factura" view="colnames">
+<left>602</left>
+<top>40</top>
+<width>198</width>
+<height>217</height>
+<sql_create_table>CREATE TABLE `factura` (
+  `codFactura` int(11) NOT NULL AUTO_INCREMENT,
+  `numeroFactura` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `codVendedor` int(11) NOT NULL,
+  `codCliente` int(11) NOT NULL,
+  `totalVenta` decimal(10,2) NOT NULL,
+  `fechaRegistro` datetime NOT NULL,
+  PRIMARY KEY (`codFactura`),
+  KEY `FK_factura_vendedor` (`codVendedor`),
+  KEY `FK_factura_cliente` (`codCliente`),
+  CONSTRAINT `FK_factura_cliente` FOREIGN KEY (`codCliente`) REFERENCES `cliente` (`codCliente`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_factura_vendedor` FOREIGN KEY (`codVendedor`) REFERENCES `vendedor` (`codVendedor`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="producto" view="colnames">
+<left>603</left>
+<top>357</top>
+<width>206</width>
+<height>217</height>
+<sql_create_table>CREATE TABLE `producto` (
+  `codProducto` int(11) NOT NULL AUTO_INCREMENT,
+  `nombreProducto` varchar(75) COLLATE utf8_spanish_ci NOT NULL,
+  `precioVenta` decimal(10,2) NOT NULL,
+  `stockMinimo` int(11) NOT NULL,
+  `stockActual` int(11) NOT NULL,
+  `codBarra` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`codProducto`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+<table name="vendedor" view="colnames">
+<left>296</left>
+<top>56</top>
+<width>205</width>
+<height>267</height>
+<sql_create_table>CREATE TABLE `vendedor` (
+  `codVendedor` int(11) NOT NULL AUTO_INCREMENT,
+  `nombres` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
+  `apellidos` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
+  `dui` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `celular` varchar(8) COLLATE utf8_spanish_ci NOT NULL,
+  `direccion` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`codVendedor`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>

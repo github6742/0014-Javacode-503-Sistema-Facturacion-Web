@@ -16,7 +16,7 @@ and open the template in the editor.
     </h:head>
     <h:body>
         <div class="login">
-            <h:form>
+            <h:form id="formLogin">
                 <p:growl id="mensajeGeneral" sticky="true" showDetail="true" life="300"/>
 
                 <p:panel header="Login Sistema de Facturacion" widgetVar="dlg" >
@@ -24,13 +24,17 @@ and open the template in the editor.
                     <h:panelGrid columns="2" cellpadding="5">
 
                         <h:outputLabel for="usuario" value="Usuario"/>
-                        <p:inputText id="username" value="" placeholder="Usuario" required="true" label="username"/>
+                        <p:inputText id="usuario" value="#{loginBean.usuario.nombreUsuario}" placeholder="Usuario" required="true" 
+                                     label="username"
+                                     requiredMessage="Escriba el usuario por favor"/>
 
                         <h:outputLabel for="password" value="Password"/>
-                        <p:inputText id="password" value="" placeholder="Password" required="true" label="password"/>
+                        <p:inputText id="password" value="#{loginBean.usuario.password}" placeholder="Password" required="true" 
+                                     label="password"
+                                     requiredMessage="Escriba el password por favor"/>
 
                         <f:facet name="footer">
-                            <p:commandButton value="Login" update="mensajeGeneral" actionListener="#{userLoginView.login}"
+                            <p:commandButton value="Login" update="formLogin" actionListener="#{loginBean.login(event)}"
                                              oncomplete="handleLoginRequest(xhr,status,args)"/>
                         </f:facet>
 
@@ -43,10 +47,9 @@ and open the template in the editor.
         <script type="text/javascript">
             function handleLoginRequest(xhr, status, args) {
                 if (args.validationFailed || !args.loggedIn) {
-                    PF('dlg').jq.effect("shake", {times: 5}, 100);
+                    jQuery("#formLogin").effect("shake", {times: 3}, 350);
                 } else {
-                    PF('dlg').hide();
-                    $('#loginLink').fadeOut();
+                    location.href = args.ruta;
                 }
             }
         </script>
