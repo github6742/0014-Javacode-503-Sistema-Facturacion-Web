@@ -3,6 +3,14 @@
     margin: 0 auto;
 }
 
+#sessionUsuario{
+    color: #000000;
+    font-weight: bold;
+    position: absolute;
+    right: 25px;
+    top: 25px;
+}
+
 #menuPrincipal{
     margin-top: 20px;
     position: relative;

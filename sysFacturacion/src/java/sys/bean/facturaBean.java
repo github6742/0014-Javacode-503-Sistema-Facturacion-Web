@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.hibernate.Session;
@@ -35,6 +36,10 @@ public class facturaBean implements Serializable {
 
     Session session = null;
     Transaction transaction = null;
+    
+    @ManagedProperty("#{loginBean}")
+    private loginBean lBean;
+    
 
     private Cliente cliente;
     private Integer codigoCliente;
@@ -62,6 +67,17 @@ public class facturaBean implements Serializable {
         this.cliente = new Cliente();
     }
 
+    public loginBean getlBean() {
+        return lBean;
+    }
+
+    public void setlBean(loginBean lBean) {
+        this.lBean = lBean;
+    }
+
+    
+    
+    
     public Cliente getCliente() {
         return cliente;
     }
@@ -463,8 +479,8 @@ public class facturaBean implements Serializable {
         System.out.println("<<<guardarVenta>>>--0010--");
         this.session = null;
         this.transaction = null;
-        this.vendedor.setCodVendedor(2);
-        this.cliente.setCodCliente(2);
+        this.vendedor.setCodVendedor(lBean.getUsuario().getVendedor().getCodVendedor());
+        //this.cliente.setCodCliente(2);
         System.out.println("<<<guardarVenta>>>--0020--");
         
         try {

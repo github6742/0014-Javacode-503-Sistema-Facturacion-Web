@@ -18,6 +18,19 @@
         <div id="top">
             <ui:insert name="top"></ui:insert>
             <h1>SISTEMA DE FACTURACION</h1>
+            
+            <div id="sessionUsuario">
+                <span>
+                    <h:form>
+                        <p:outputLabel value="Hola, "/>
+                        <p:outputLabel value="#{loginBean.usuario.vendedor.nombres}  "/>
+                        <p:commandButton id="btnSalir" value="Salir" action="#{loginBean.cerrarSession()}"/>
+                    </h:form>
+                </span>
+            </div>
+            
+            
+            
             <div id="menuPrincipal">
             <h:form>
 

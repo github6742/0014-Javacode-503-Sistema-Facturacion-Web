@@ -58,6 +58,9 @@ public class loginBean implements Serializable{
         this.usuario = uDao.login(this.usuario);
         
         if(this.usuario != null){
+            
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario",this.usuario.getNombreUsuario());
+                        
             loggedIn = true;
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", this.usuario.getNombreUsuario());
             ruta="/sysFacturacion/faces/Views/bienvenido.xhtml";
