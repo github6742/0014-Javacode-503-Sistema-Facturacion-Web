@@ -3,12 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Desarrollos/java/0014-Javacode-503-Sistema-Facturacion-Web/sysFacturacion/src/java/hibernate.cfg.xml</file>
-            <file>file:/C:/Desarrollos/java/0014-Javacode-503-Sistema-Facturacion-Web/sysFacturacion/src/java/sys/bean/loginBean.java</file>
+            <file>file:/C:/Desarrollos/java/0014-Javacode-503-Sistema-Facturacion-Web/sysFacturacion/web/resources/css/cssLayout.css</file>
             <file>file:/C:/Desarrollos/java/0014-Javacode-503-Sistema-Facturacion-Web/sysFacturacion/web/login.xhtml</file>
-            <file>file:/C:/Desarrollos/java/0014-Javacode-503-Sistema-Facturacion-Web/sysFacturacion/src/java/sys/imp/usuarioDaoImp.java</file>
-            <file>file:/C:/Desarrollos/java/0014-Javacode-503-Sistema-Facturacion-Web/sysFacturacion/src/java/sys/dao/usuarioDao.java</file>
-            <file>file:/C:/Desarrollos/java/0014-Javacode-503-Sistema-Facturacion-Web/sysFacturacion/src/java/sys/clasesClasesAuxiliares/encriptarPassword.java</file>
+            <file>file:/C:/Desarrollos/java/0014-Javacode-503-Sistema-Facturacion-Web/sysFacturacion/src/java/sys/bean/facturaBean.java</file>
+            <file>file:/C:/Desarrollos/java/0014-Javacode-503-Sistema-Facturacion-Web/sysFacturacion/web/plantilla/plantilla.xhtml</file>
+            <file>file:/C:/Desarrollos/java/0014-Javacode-503-Sistema-Facturacion-Web/sysFacturacion/web/Views/Venta/Factura.xhtml</file>
         </group>
     </open-files>
 </project-private>
