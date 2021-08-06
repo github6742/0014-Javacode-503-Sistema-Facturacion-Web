@@ -2,6 +2,7 @@ package sys.bean;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -11,10 +12,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
+import sys.clasesClasesAuxiliares.reporteFactura;
 import sys.dao.clienteDao;
 import sys.dao.detalleFacturaDao;
 import sys.dao.facturaDao;
@@ -569,6 +572,29 @@ public class facturaBean implements Serializable {
         this.fechaSistema = (dia + "/" + mes + "/" + anio);
         
         return fechaSistema;
+    }
+    
+    //Metodo para invocar el reporte y enviarle los parametros si es que necesita
+    public void verReporte() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        
+        this.vendedor.setCodVendedor(lBean.getUsuario().getVendedor().getCodVendedor());
+        int cc = this.cliente.getCodCliente();
+        int cv = this.vendedor.getCodVendedor();
+        int cf = this.factura.getCodFactura()+1;
+        
+        //invocamos el metodo guardar guardarVenta para, almacenar las ventas en las tablas correspondientes
+        this.guardarVenta();
+        
+        
+        //Instancia hacia la clase reporteClientes        
+        reporteFactura rFactura = new reporteFactura();
+        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+        String ruta = servletContext.getRealPath("/Reportes/factura.jasper");
+       
+        rFactura.getReporte(ruta,cc,cv,cf);        
+        FacesContext.getCurrentInstance().responseComplete();               
     }
     
     
